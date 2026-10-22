@@ -1,0 +1,9 @@
+upstream/node_modules/
+.work/
+dist/
+artifacts/
+.env.local
+playwright-report/
+test-results/
+__pycache__/
+*.pyc

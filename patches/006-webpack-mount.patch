@@ -1,0 +1,22 @@
+--- a/scripts/lite/postbuild.mjs
++++ b/scripts/lite/postbuild.mjs
+@@ -37,6 +37,19 @@
+   }
+   const commit = (env.GIT_COMMIT ?? "").trim().slice(0, 7) || "local";
+   const buildId = (env.NEXT_PUBLIC_LITE_BUILD_ID ?? "").trim() || makeBuildId({ version, commit });
++
++  // Next's Webpack runtime uses an absolute chunk prefix. Preserve the
++  // Stalwart mount for lazy chunks, just as the entry rewrites eager assets.
++  if (target === "stalwart") {
++    const chunks = join(outDir, "_next", "static", "chunks");
++    const runtimes = readdirSync(chunks).filter(name => name.endsWith(".js") && /[a-zA-Z_$][\w$]*\.p="\/_next\/"/.test(readFileSync(join(chunks, name), "utf8")));
++    if (runtimes.length !== 1) throw new Error("expected one Webpack runtime");
++    const runtime = join(chunks, runtimes[0]);
++    const text = readFileSync(runtime, "utf8");
++    const prefix = /([a-zA-Z_$][\w$]*)\.p="\/_next\/"/g;
++    if ([...text.matchAll(prefix)].length !== 1) throw new Error("Webpack public path changed; review mount patch");
++    writeFileSync(runtime, text.replace(prefix, '$1.p=(globalThis.__BULWARK_LITE_MOUNT__||"")+"/_next/"'));
++  }
+ 
+   const config = buildLiteConfig(env, { target });
+   const files = target === "stalwart"

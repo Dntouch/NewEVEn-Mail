@@ -1,0 +1,59 @@
+--- a/lib/builtin-themes.ts
++++ b/lib/builtin-themes.ts
+@@ -1,3 +1,4 @@
++import { newevenTheme } from './neweven-theme';
+ import type { InstalledTheme } from './plugin-types';
+ import { flatFieldsCSS, flatFieldsSkin } from './theme-flat-fields';
+ 
+@@ -876,6 +877,7 @@
+ }`;
+ 
+ export const BUILTIN_THEMES: InstalledTheme[] = [
++  newevenTheme,
+   {
+     id: 'builtin-flat-fields',
+     name: 'Flat fields',
+--- a/scripts/lite/lib.mjs
++++ b/scripts/lite/lib.mjs
+@@ -217,7 +217,7 @@
+ export function buildLitePolicy() {
+   return {
+     _comment: "Optional admin policy for Bulwark Lite (same shape as the admin dashboard's policy). Plugins and sidebar apps stay off in Lite.",
+-    themePolicy: { defaultColorMode: "dark", lockColorMode: false },
++    themePolicy: { defaultThemeId: "builtin-neweven", defaultColorMode: "dark", lockColorMode: false },
+     features: {
+       pluginsEnabled: false,
+       sidebarAppsEnabled: false,
+--- a/lib/__tests__/builtin-themes.test.ts
++++ b/lib/__tests__/builtin-themes.test.ts
+@@ -2,8 +2,8 @@
+ import { BUILTIN_THEMES } from '../builtin-themes';
+ 
+ describe('BUILTIN_THEMES', () => {
+-  it('contains exactly 7 themes', () => {
+-    expect(BUILTIN_THEMES).toHaveLength(7);
++  it('contains exactly 8 themes', () => {
++    expect(BUILTIN_THEMES).toHaveLength(8);
+   });
+ 
+   it('all themes have required fields', () => {
+--- a/components/providers/theme-provider.tsx
++++ b/components/providers/theme-provider.tsx
+@@ -1,14 +1,16 @@
+ "use client";
+ 
+ import { useEffect } from 'react';
++import { usePolicyStore } from '@/stores/policy-store';
+ import { useThemeStore } from '@/stores/theme-store';
+ 
+ export function ThemeProvider({ children }: { children: React.ReactNode }) {
++  const defaultThemeId = usePolicyStore(state => state.policy.themePolicy?.defaultThemeId);
+   const initializeTheme = useThemeStore((state) => state.initializeTheme);
+ 
+   useEffect(() => {
+     initializeTheme();
+-  }, [initializeTheme]);
++  }, [initializeTheme, defaultThemeId]);
+ 
+   useEffect(() => {
+     if (process.env.NODE_ENV === 'production') return;

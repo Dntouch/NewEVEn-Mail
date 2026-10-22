@@ -1,0 +1,44 @@
+--- a/scripts/lite/lib.mjs
++++ b/scripts/lite/lib.mjs
+@@ -168,6 +168,11 @@
+       : {}),
+     rememberMeEnabled: parseBool(env.LITE_REMEMBER_ME, true),
+     demoMode: parseBool(env.LITE_DEMO_MODE, false),
++    faviconUrl: "/branding/neweven/mark.svg",
++    appLogoLightUrl: "/branding/neweven/mark.svg",
++    appLogoDarkUrl: "/branding/neweven/mark.svg",
++    loginLogoLightUrl: "/branding/neweven/mark.svg",
++    loginLogoDarkUrl: "/branding/neweven/mark.svg",
+     loginShowTotp: true,
+     loginShowVersion: true,
+   };
+@@ -212,6 +217,7 @@
+ export function buildLitePolicy() {
+   return {
+     _comment: "Optional admin policy for Bulwark Lite (same shape as the admin dashboard's policy). Plugins and sidebar apps stay off in Lite.",
++    themePolicy: { defaultColorMode: "dark", lockColorMode: false },
+     features: {
+       pluginsEnabled: false,
+       sidebarAppsEnabled: false,
+@@ -228,8 +234,8 @@
+     start_url: p("/"),
+     scope: p("/"),
+     display: "standalone",
+-    background_color: "#ffffff",
+-    theme_color: "#ffffff",
++    background_color: "#020b14",
++    theme_color: "#020b14",
+     icons: [
+       { src: p("/icon-192x192.png"), sizes: "192x192", type: "image/png" },
+       { src: p("/icon-512x512.png"), sizes: "512x512", type: "image/png" },
+@@ -1203,8 +1209,8 @@
+     start_url: "./",
+     scope: "./",
+     display: "standalone",
+-    background_color: "#ffffff",
+-    theme_color: "#ffffff",
++    background_color: "#020b14",
++    theme_color: "#020b14",
+     icons: [
+       { src: "icon-192x192.png", sizes: "192x192", type: "image/png" },
+       { src: "icon-512x512.png", sizes: "512x512", type: "image/png" },

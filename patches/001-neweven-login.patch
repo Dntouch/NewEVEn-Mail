@@ -1,0 +1,97 @@
+--- a/app/(main)/[locale]/login/page.tsx
++++ b/app/(main)/[locale]/login/page.tsx
+@@ -1,5 +1,7 @@
+ "use client";
+ 
++import { NewEVEnBrand, NewEVEnLanguage, NewEVEnBenefits } from "@/components/neweven/login-chrome";
++import "@/components/neweven/login.css";
+ import { Suspense, useState, useEffect, useRef, useCallback } from "react";
+ import { useRouter } from "@/i18n/navigation";
+ import { useParams, useSearchParams } from "next/navigation";
+@@ -140,6 +142,7 @@
+   const router = useRouter();
+   const t = useTranslations("login");
+   const params = useParams();
++  const de = params.locale === "de";
+   const searchParams = useSearchParams();
+   const isAddAccountMode = searchParams.get("mode") === "add-account";
+ 
+@@ -957,7 +960,7 @@
+     return (
+       <div className="min-h-screen flex flex-col items-center justify-center bg-gradient-to-br from-background via-muted/10 to-muted/30 relative px-4">
+         {/* Theme toggle, hidden while the theme policy locks the mode (#1280) */}
+-        <div className="absolute top-5 right-5" ref={themeMenuRef} hidden={colorModeLocked} suppressHydrationWarning>
++        <div className="neweven-theme" ref={themeMenuRef} hidden={colorModeLocked} suppressHydrationWarning>
+           <button
+             type="button"
+             ref={themeButtonRef}
+@@ -1107,7 +1110,10 @@
+   }
+ 
+   return (
+-    <div className="min-h-screen flex flex-col items-center justify-center bg-gradient-to-br from-background via-muted/10 to-muted/30 relative px-4">
++    <div className="neweven-login min-h-screen flex flex-col items-center relative"
++      style={{ "--neweven-space-image": `url("${withBasePath("/branding/neweven/earth.webp")}")` } as React.CSSProperties}>
++      <NewEVEnLanguage />
++      <NewEVEnBrand />
+       <MobileHandoffConsent
+         url={pendingHandoff?.url ?? null}
+         username={pendingHandoff?.username ?? ""}
+@@ -1117,7 +1123,7 @@
+         }}
+       />
+       {/* Theme toggle - top right, dropdown style; hidden while the theme policy locks the mode (#1280) */}
+-      <div className="absolute top-5 right-5" ref={themeMenuRef} hidden={colorModeLocked} suppressHydrationWarning>
++      <div className="neweven-theme" ref={themeMenuRef} hidden={colorModeLocked} suppressHydrationWarning>
+         <button
+           type="button"
+           ref={themeButtonRef}
+@@ -1171,33 +1177,13 @@
+         )}
+       </div>
+ 
+-      <div className="w-full max-w-[400px] mx-auto">
+-        {/* Card container */}
+-        <div className="rounded-2xl border border-border/60 bg-background/80 backdrop-blur-sm shadow-xl shadow-black/5 dark:shadow-black/20 overflow-hidden">
+-          {/* Header section with logo */}
+-          <div className="px-8 pt-10 pb-6 text-center">
+-            <div className={cn("inline-flex items-center justify-center mb-5", !hasLogoSize && "w-16 h-16")}>
+-              <img
+-                src={withBasePath(resolvedTheme === 'dark' ? loginLogoDarkUrl : loginLogoLightUrl)}
+-                alt={appName}
+-                className={cn("object-contain", !hasLogoSize && "max-w-16 max-h-16")}
+-                style={loginLogoStyle}
+-              />
+-            </div>
+-            {loginShowHeading && (
+-              <h1 className="text-2xl font-semibold text-foreground tracking-tight">
+-                {isAddAccountMode ? t("add_account_title") : appName}
+-              </h1>
+-            )}
+-            {loginShowSubtitle && (
+-              <p className="text-sm text-muted-foreground mt-1.5">
+-                {isAddAccountMode ? t("add_account_subtitle") : (t("title") !== appName ? t("title") : "Sign in to your account")}
+-              </p>
+-            )}
++      <div className="neweven-content">
++        <div className="neweven-card">
++          <div className="neweven-card-heading">
++            <h2>{isAddAccountMode ? t("add_account_title") : de ? "Willkommen bei NewEVEn Mail" : "Welcome to NewEVEn Mail"}</h2>
++            <p>{isAddAccountMode ? t("add_account_subtitle") : de ? "Melden Sie sich an, um auf Ihr Webmail zuzugreifen." : "Sign in to access your webmail."}</p>
+           </div>
+-
+-          {/* Form section */}
+-          <div className="px-8 pb-8">
++          <div className="neweven-card-form">
+             {/* Session Expired Banner */}
+             {sessionExpired && (
+               <div
+@@ -1680,6 +1666,8 @@
+           {loginShowVersion && <VersionBadge />}
+         </div>
+       </div>
++      <NewEVEnBenefits />
++      <footer className="neweven-footer">Powered by <a href="https://www.bulwarkmail.org/" target="_blank" rel="noopener noreferrer">Bulwark</a> · NewEVEn Mail</footer>
+     </div>
+   );
+ }

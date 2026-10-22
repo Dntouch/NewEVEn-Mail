@@ -1,0 +1,194 @@
+# Projektauftrag: NewEVEn Mail – Custom Bulwark
+
+## Ziel
+
+Erstelle ein eigenständiges Codex-Projekt zur Entwicklung und Pflege einer individuell gestalteten Version von **Bulwark Lite** für unseren Mailserver **NewEVEn**.
+
+Das Ziel ist keine neue Webmail-Anwendung, sondern eine visuell umfangreich angepasste Version des bestehenden Bulwark-Frontends.
+
+Die vorhandene Funktionalität von Bulwark soll erhalten bleiben. Das Design soll sich am bereitgestellten Entwurf **„NewEVEn Mail“** orientieren.
+
+**Wichtig:** Nicht nur das Logo austauschen. Der Entwurf soll als Grundlage für eine echte, responsive Oberfläche dienen.
+
+## Bestehende Infrastruktur
+
+- Server: NewEVEn, Debian 13
+- Mailserver: Stalwart 0.16.27
+- Webmail: Bulwark Lite 1.17.0
+- Reverse Proxy: Caddy
+- Produktive Adresse: `https://neweven.ebriefbox.de/webmail/`
+- Administration: `https://neweven.ebriefbox.de/admin/`
+- Deployment: SSH/SFTP über den Benutzer `webdeploy`
+- Webroot für andere Projekte: `/srv/www/againstmainstream/`
+
+Bulwark wird aktuell als Stalwart Web Application aus einem ZIP-Bundle bereitgestellt.
+
+Das bestehende Produktivsystem darf während der Entwicklung weiterlaufen.
+
+## Phase 1 – Technische Bestandsaufnahme
+
+Untersuche das offizielle Bulwark-Projekt einschließlich Quellcode, Build-System, Konfigurationsmöglichkeiten und Lizenz.
+
+Ermittle insbesondere:
+
+1. Wie Bulwark Lite gebaut und für Stalwart paketiert wird.
+2. Welche Branding-Optionen bereits unterstützt werden.
+3. Wie Login, Layout, CSS, Themes und Assets organisiert sind.
+4. Welche Komponenten sich austauschen oder erweitern lassen.
+5. Wie Updates des Upstream-Projekts übernommen werden können.
+
+Keine Annahmen über interne APIs oder Projektstrukturen treffen. Tatsächlichen Quellcode und Dokumentation prüfen.
+
+## Phase 2 – Codex-Projekt anlegen
+
+Richte ein eigenes Projekt für NewEVEn Mail ein.
+
+Gewünschte Eigenschaften:
+
+- Git-Versionsverwaltung
+- Nachvollziehbare Trennung zwischen Upstream-Code und eigenen Anpassungen
+- Reproduzierbarer Build
+- Entwicklungs- und Produktionskonfiguration
+- Dokumentation für Einrichtung, Entwicklung und Deployment
+- Möglichkeit, spätere Bulwark-Versionen zu übernehmen
+
+Prüfe, ob ein Fork, ein Patch-System oder eine separate Theme-/Branding-Erweiterung langfristig die bessere Lösung ist.
+
+Die Architekturentscheidung soll auf den tatsächlichen Möglichkeiten von Bulwark beruhen.
+
+## Phase 3 – Design umsetzen
+
+Nutze den bereitgestellten Bildentwurf als visuelle Referenz.
+
+### Login-Seite
+
+Gestalte eine eigenständige NewEVEn-Mail-Anmeldeseite mit:
+
+- Dunklem, hochwertigem Design
+- Weltraumhintergrund mit Erde am Horizont
+- Dezenten blauen Leuchteffekten
+- Zentral angeordnetem Login-Panel
+- NewEVEn-Mail-Logo
+- E-Mail- und Passworteingabe
+- Bestehender Zwei-Faktor-Anmeldung
+- Responsivem Layout für Smartphones und Tablets
+
+Das Design soll hochwertig und ruhig wirken, nicht wie eine überladene Science-Fiction-Spieloberfläche.
+
+### Branding
+
+Entwickle eine zusammenhängende visuelle Identität:
+
+- NewEVEn-Mail-Hauptlogo
+- Kompakte Bildmarke
+- Favicon
+- Mobile App Icon
+- Einheitliche Typografie
+- Dunkle Farbpalette mit blauen Akzenten
+
+Der Pinguin mit Briefumschlag aus dem Entwurf ist zunächst die visuelle Richtung. Prüfe seine Umsetzung als skalierbare Bildmarke.
+
+### Webmail-Oberfläche
+
+Übertrage die Designsprache auf die eigentliche Anwendung:
+
+- Dunkle Navigationsflächen
+- Dezente blaue Akzente
+- Modernisierte Ordnernavigation
+- Nachrichtenliste und Leseansicht
+- Passende Icons und Bedienelemente
+- Einheitliche Dialoge und Einstellungen
+- Responsive Darstellung
+
+Die bestehende Informationsarchitektur und Bedienbarkeit von Bulwark sollen erhalten bleiben, sofern es keinen überzeugenden Grund für Änderungen gibt.
+
+### Funktionalität
+
+Sämtliche vorhandenen Funktionen müssen weiterhin funktionieren, insbesondere:
+
+- E-Mails lesen und schreiben
+- Anhänge
+- Ordner und Tags
+- Suche
+- Kontakte
+- Kalender
+- Dateiverwaltung
+- Anmeldung und Zwei-Faktor-Authentifizierung
+- JMAP-Kommunikation mit Stalwart
+
+Keine bestehenden Funktionen zugunsten des Designs entfernen.
+
+## Phase 4 – Entwicklungs- und Testumgebung
+
+Die angepasste Anwendung muss vollständig getestet werden können, ohne das produktive Bulwark zu ersetzen.
+
+Richte dafür einen separaten Testpfad oder eine geeignete lokale Entwicklungsumgebung ein.
+
+Prüfe insbesondere:
+
+- Login und Logout
+- JMAP-Verbindungen
+- Versand und Empfang
+- Kontakte und Kalender
+- Datei-Upload
+- Darstellung auf Desktop und Smartphone
+- Browserkompatibilität
+- Ladezeiten und Ressourcenverbrauch
+
+Echte Postfachdaten dürfen nicht unnötig in Testartefakte, Screenshots oder Logs übernommen werden.
+
+## Phase 5 – Build und Deployment
+
+Erstelle einen reproduzierbaren Build für eine mit Stalwart kompatible Bulwark-Lite-Version.
+
+Der Build soll als Web Application in Stalwart verwendbar sein.
+
+Ziel ist ein einfacher Ablauf:
+
+1. Quellcode ändern
+2. Tests ausführen
+3. Produktions-Bundle erzeugen
+4. Bundle auf NewEVEn bereitstellen
+5. Stalwart-Anwendung aktualisieren
+6. Funktion prüfen
+
+Eine Aktualisierung darf nicht unkontrolliert die produktive Mailoberfläche ersetzen.
+
+Implementiere einen dokumentierten Rollback auf die vorherige funktionierende Version.
+
+## Phase 6 – Updatefähigkeit
+
+Die NewEVEn-Anpassungen sollen nicht bei jedem Bulwark-Update vollständig neu umgesetzt werden müssen.
+
+Entwickle deshalb eine wartbare Strategie für:
+
+- Upstream-Updates
+- Konflikterkennung
+- Anpassung eigener Komponenten
+- Automatisierte Builds
+- Regressionstests
+- Versionierte Releases
+
+Die bestehende Bulwark-Funktionalität hat Vorrang vor rein kosmetischen Änderungen.
+
+## Arbeitsweise
+
+Arbeite schrittweise und anhand der tatsächlich vorhandenen Projektstruktur.
+
+Keine künstlichen Funktionsbegrenzungen oder unnötigen Architekturvorgaben einführen.
+
+Technische Schwierigkeiten sollen untersucht und möglichst gelöst werden, statt die gewünschte Funktionalität vorschnell auszuschließen.
+
+Vermeide zusätzliche Dienste und Abhängigkeiten, wenn sie keinen konkreten Nutzen bringen.
+
+Nutze das bestehende lokale Entwicklungssystem EVE und die vorhandenen Deployment-Möglichkeiten von NewEVEn.
+
+Produktive Änderungen an Stalwart, Caddy oder Bulwark erst nach erfolgreichem Test und mit vorhandenem Rückweg durchführen.
+
+## Erwartetes Ergebnis
+
+Ein eigenständiges, versioniertes und langfristig wartbares **NewEVEn-Mail-Projekt**, das Bulwark technisch als Grundlage nutzt und die bereitgestellte Designsprache praktisch umsetzt.
+
+Beginne mit der Bestandsaufnahme und dem Projektaufbau. Erstelle anschließend eine erste funktionsfähige Login-Seite im NewEVEn-Design und mache sie in der Testumgebung zugänglich.
+
+Das Projekt soll danach schrittweise zur vollständig angepassten Webmail-Oberfläche ausgebaut werden.

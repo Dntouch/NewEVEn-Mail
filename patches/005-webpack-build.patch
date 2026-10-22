@@ -1,0 +1,22 @@
+--- a/scripts/lite/build.mjs
++++ b/scripts/lite/build.mjs
+@@ -55,7 +55,7 @@
+ 
+ if (dryRun) {
+   runPrepare({ argv: ["--dry-run"], env });
+-  console.log("[lite] would run: next build --turbopack with", {
++  console.log("[lite] would run: next build --webpack with", {
+     LITE_TARGET: target,
+     LITE_BUILD_ID: env.NEXT_PUBLIC_LITE_BUILD_ID,
+     LITE_JMAP_SERVER_URL: env.LITE_JMAP_SERVER_URL ?? "",
+@@ -73,8 +73,8 @@
+ 
+ const require = createRequire(import.meta.url);
+ const nextBin = require.resolve("next/dist/bin/next", { paths: [repoRoot] });
+-console.log(`[lite] next build --turbopack (static export, ${target} target, build ${env.NEXT_PUBLIC_LITE_BUILD_ID})`);
+-const build = spawnSync(process.execPath, [nextBin, "build", "--turbopack"], { cwd: repoRoot, env, stdio: "inherit" });
++console.log(`[lite] next build --webpack (static export, ${target} target, build ${env.NEXT_PUBLIC_LITE_BUILD_ID})`);
++const build = spawnSync(process.execPath, [nextBin, "build", "--webpack"], { cwd: repoRoot, env, stdio: "inherit" });
+ if (build.status !== 0) {
+   console.error(`[lite] next build failed with exit code ${build.status}`);
+   process.exit(build.status ?? 1);

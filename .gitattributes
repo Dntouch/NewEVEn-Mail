@@ -1,0 +1,3 @@
+# Preserve upstream license formatting and unified-diff context lines.
+LICENSE -whitespace
+patches/*.patch -whitespace

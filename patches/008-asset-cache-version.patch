@@ -1,0 +1,20 @@
+--- a/app/(main)/[locale]/login/page.tsx
++++ b/app/(main)/[locale]/login/page.tsx
+@@ -23,7 +23,7 @@
+ import { DEFAULT_OAUTH_SCOPES } from "@/lib/oauth/scopes";
+ import { useUpdateStore, selectBanner } from "@/stores/update-store";
+ import { offersOwnOAuth, type PublicJmapServerEntry } from "@/lib/admin/jmap-servers";
+-import { IS_LITE, getLiteInjectedClientId } from "@/lib/lite";
++import { IS_LITE, LITE_BUILD_ID, getLiteInjectedClientId } from "@/lib/lite";
+ import { getLiteClientId, probeLiteTokenLogin } from "@/lib/auth/lite-tokens";
+ import {
+   LITE_OAUTH_AVAILABLE,
+@@ -1111,7 +1111,7 @@
+ 
+   return (
+     <div className="neweven-login min-h-screen flex flex-col items-center relative"
+-      style={{ "--neweven-space-image": `url("${withBasePath("/branding/neweven/earth.webp")}")` } as React.CSSProperties}>
++      style={{ "--neweven-space-image": `url("${withBasePath(`/branding/neweven/earth.webp?v=${LITE_BUILD_ID}`)}")` } as React.CSSProperties}>
+       <NewEVEnLanguage />
+       <NewEVEnBrand />
+       <MobileHandoffConsent

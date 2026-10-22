@@ -1,0 +1,17 @@
+--- a/next.config.ts
++++ b/next.config.ts
+@@ -48,6 +48,14 @@
+ }
+ 
+ const nextConfig: NextConfig = {
++  webpack(config, { dev, isServer }) {
++    if (!dev && !isServer) {
++      // Plain filenames avoid encoded route brackets in Stalwart ZIP lookups.
++      config.output.filename = "static/chunks/[id]-[contenthash].js";
++      config.output.chunkFilename = "static/chunks/[id]-[contenthash].js";
++    }
++    return config;
++  },
+   output: isLite ? "export" : "standalone",
+   // No `X-Powered-By: Next.js` on every response.
+   poweredByHeader: false,

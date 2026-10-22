@@ -1,0 +1,59 @@
+name: NewEVEn Lite build
+on: [push, pull_request, workflow_dispatch]
+permissions:
+  contents: read
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        target: [static, stalwart]
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          submodules: recursive
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '26.7.0'
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - run: python3 scripts/project.py prepare
+      - run: python3 scripts/project.py install
+      - run: python3 scripts/project.py test
+      - run: python3 scripts/project.py build --target ${{ matrix.target }}
+      - if: matrix.target == 'stalwart'
+        run: |
+          cd .work/webmail
+          npx playwright install --with-deps chromium
+      - if: matrix.target == 'stalwart'
+        run: |
+          python3 scripts/project.py serve --target stalwart > /tmp/neweven-preview.log 2>&1 &
+          PREVIEW_PID=$!
+          trap 'kill "$PREVIEW_PID" 2>/dev/null || true' EXIT
+          for attempt in $(seq 1 30); do
+            if curl --silent --fail http://localhost:4173/webmail-test/ > /dev/null; then break; fi
+            sleep 1
+          done
+          node scripts/browser-check.mjs
+      - if: matrix.target == 'static'
+        run: |
+          cd .work/webmail
+          npx playwright install --with-deps chromium
+      - if: matrix.target == 'static'
+        run: |
+          python3 scripts/project.py demo > /tmp/neweven-demo.log 2>&1 &
+          DEMO_PID=$!
+          trap 'kill "$DEMO_PID" 2>/dev/null || true' EXIT
+          for attempt in $(seq 1 30); do
+            if curl --silent --fail http://localhost:4174/ > /dev/null; then break; fi
+            sleep 1
+          done
+          node scripts/application-check.mjs
+      - uses: actions/upload-artifact@v4
+        with:
+          name: neweven-${{ matrix.target }}
+          path: |
+            dist/
+            artifacts/
