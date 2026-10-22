@@ -3,7 +3,13 @@ on:
   push:
     branches: ['**']
     tags: ['neweven-v*']
+    paths-ignore:
+      - '**/*.md'
+      - 'docs/**'
   pull_request:
+    paths-ignore:
+      - '**/*.md'
+      - 'docs/**'
   workflow_dispatch:
 permissions:
   contents: read
