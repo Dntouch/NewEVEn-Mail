@@ -3,11 +3,11 @@ import type { InstalledTheme } from './plugin-types';
 // Native Bulwark tokens apply to navigation, lists, calendar, files, settings
 // and dialogs. Message HTML remains in Bulwark's existing rendering pipeline.
 export const newevenLight = {
-  background: '#f3f7fc', foreground: '#10263d', card: '#ffffff', 'card-foreground': '#10263d',
-  popover: '#ffffff', 'popover-foreground': '#10263d', secondary: '#e7eff8', 'secondary-foreground': '#10263d',
-  muted: '#e7eff8', 'muted-foreground': '#4b6179', accent: '#d7eaff', 'accent-foreground': '#064f9c',
-  sidebar: '#e9f1fa', 'sidebar-foreground': '#10263d', 'sidebar-border': '#bdcfe3',
-  'sidebar-accent': '#d7eaff', 'sidebar-accent-foreground': '#064f9c', border: '#bdcfe3', input: '#748da8',
+  background: '#ffffff', foreground: '#10263d', card: '#ffffff', 'card-foreground': '#10263d',
+  popover: '#ffffff', 'popover-foreground': '#10263d', secondary: '#edf5fc', 'secondary-foreground': '#10263d',
+  muted: '#eaf3fb', 'muted-foreground': '#4b6179', accent: '#d7eaff', 'accent-foreground': '#064f9c',
+  sidebar: '#081a2c', 'sidebar-foreground': '#eaf3fc', 'sidebar-border': '#294d6c',
+  'sidebar-accent': '#123b60', 'sidebar-accent-foreground': '#eaf3fc', border: '#bdcfe3', input: '#748da8',
   ring: '#0068d9', primary: '#0068d9', 'primary-foreground': '#ffffff',
   selection: '#d7eaff', 'selection-foreground': '#064f9c', unread: '#0068d9',
   destructive: '#b42335', 'destructive-foreground': '#ffffff', success: '#14704b', 'success-foreground': '#ffffff',
@@ -27,12 +27,49 @@ export const newevenDark = {
 const tokens = (values: Record<string,string>) => Object.entries(values).map(([key,value])=>`  --color-${key}: ${value};`).join('\n');
 
 export const newevenTheme: InstalledTheme = {
-  id: 'builtin-neweven', name: 'NewEVEn Mail', version: '1.0.0', author: 'Built-in',
+  id: 'builtin-neweven', name: 'NewEVEn Mail', version: '1.1.0', author: 'Built-in',
   description: 'Deep navy surfaces, clear blue accents and calm, readable mail.',
   variants: ['light','dark'], enabled: true, builtIn: true,
   css: `:root {\n${tokens(newevenLight)}\n}\n.dark {\n${tokens(newevenDark)}\n}`,
   skin: `
 body[data-theme-skin="builtin-neweven"] { --radius-lg: 10px; --radius-xl: 12px; }
+/* Light mail stays white; the navigation carries the login's night sky. */
+:root:not(.dark) body[data-theme-skin="builtin-neweven"] [data-neweven-navigation] {
+  --color-background: #081a2c;
+  --color-foreground: #eaf3fc;
+  --color-secondary: #0b2137;
+  --color-secondary-foreground: #eaf3fc;
+  --color-muted: #142e47;
+  --color-muted-foreground: #adc5db;
+  --color-accent: #123b60;
+  --color-accent-foreground: #eaf3fc;
+  --color-border: #294d6c;
+  --color-input: #527590;
+  --color-ring: #59c6ff;
+  --color-primary: #0068d9;
+  --color-primary-foreground: #ffffff;
+  --color-popover: #10263b;
+  --color-popover-foreground: #eaf3fc;
+  --color-card: #0b2137;
+  --color-card-foreground: #eaf3fc;
+  color: var(--color-foreground);
+  background-color: #081a2c;
+  background-image:
+    radial-gradient(circle at 24px 31px, #a8dfff44 .7px, transparent 1.3px),
+    radial-gradient(circle at 83px 109px, #a8dfff28 .6px, transparent 1.2px),
+    linear-gradient(155deg, #103654 0%, #081a2c 45%, #05121f 100%);
+  background-size: 151px 193px, 211px 257px, 100% 100%;
+  border-color: #294d6c;
+}
+:root:not(.dark) body[data-theme-skin="builtin-neweven"] [data-neweven-navigation] .text-primary { color: #79d2ff; }
+:root:not(.dark) body[data-theme-skin="builtin-neweven"] [data-neweven-navigation] a[aria-current="page"] {
+  box-shadow: inset 0 0 0 1px #57b9ff55;
+}
+:root:not(.dark) body[data-theme-skin="builtin-neweven"] [data-neweven-reader-canvas],
+:root:not(.dark) body[data-theme-skin="builtin-neweven"] .email-content-wrapper {
+  background-color: #ffffff;
+}
+
 .dark body[data-theme-skin="builtin-neweven"] .text-primary { color: #59c6ff; }
 body[data-theme-skin="builtin-neweven"] [role="dialog"],
 body[data-theme-skin="builtin-neweven"] [role="menu"],

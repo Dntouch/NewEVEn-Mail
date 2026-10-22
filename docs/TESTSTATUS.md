@@ -2,7 +2,7 @@
 
 ## Erfolgreich geprüft
 
-- Frischer Aufbau aus festgelegtem Upstream-Commit; alle zehn Patches anwendbar.
+- Frischer Aufbau aus festgelegtem Upstream-Commit; alle zwölf Patches anwendbar.
 - Lockfile-Installation mit `npm ci --ignore-scripts`; die korrigierten Abhängigkeiten
   ließen sich auch mit dem vorher gefüllten npm-Cache ohne Netz installieren.
 - 211 Tests in sieben Vitest-Dateien: Lite-Konfiguration, Stalwart-Mount-Laufzeit,
@@ -39,7 +39,8 @@ Ladezeit-/Speicherprofile und Lasttests sind noch nicht durchgeführt.
 Die GitHub-Actions-Workflowdatei ist eingerichtet, aber noch nicht auf einem
 entfernten Repository ausgeführt.
 
-Kein SSH/SFTP-Upload und keine Änderung an Stalwart, Caddy oder der produktiven
+Ein lokal geprüftes Vorgänger-Bundle wurde per SSH/SFTP als versionierter
+Download bereitgestellt. Keine Änderung an Stalwart, Caddy oder der produktiven
 Webmail-Application. Der dokumentierte Rollback muss zuerst mit einer separaten
 Test-Application auf dem tatsächlichen Server erprobt werden.
 
@@ -47,3 +48,14 @@ GitHub-Veröffentlichung vorbereitet: Release-Job nach beiden Build-Jobs,
 Tag-Muster `neweven-v*`, direkter ZIP-Download und SHA-256-Prüfsummen. YAML
 lokal geparst, 211 Tests nach Ergänzung des Projekt-Quellcodelinks erneut bestanden.
 Die neue Workflow-Ausführung und tatsächliche Veröffentlichung sind noch offen.
+
+
+## Helles Theme mit Login-Anmutung
+
+Die helle Variante nutzt eine marineblaue Navigation mit dezentem Sternmuster und
+blauen Akzenten. Nachrichteninhalt und die gesamte Lesefläche bleiben weiß.
+Dark Mode bleibt unverändert. Geprüft mit 211 Regressionstests und 22 Browser-
+Ansichtsprüfungen für beide Modi auf Desktop und Smartphone. In den zusätzlichen
+Leseansicht-Prüfungen müssen Mailinhalt und Lesefläche jeweils exakt Weiß sein.
+Die neue Gestaltung wurde lokal für beide Build-Ziele erzeugt. Diese Prüfungen
+verwenden weiterhin ausschließlich synthetische Demo-Daten.

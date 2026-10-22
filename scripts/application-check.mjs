@@ -9,8 +9,11 @@ const base = process.env.NEWEVEN_DEMO_URL || 'http://localhost:4174';
 const results=[];
 const problems=[];
 try {
- for (const [device,width,height] of [['desktop',1440,1000],['mobile',390,844]]) {
+ for (const [device,width,height,mode] of [['desktop',1440,1000,'dark'],['mobile',390,844,'dark'],['desktop',1440,1000,'light'],['mobile',390,844,'light']]) {
   const context=await browser.newContext({viewport:{width,height},reducedMotion:'reduce'});
+  if (mode === 'light') await context.addInitScript(() => {
+    localStorage.setItem('theme-storage',JSON.stringify({state:{theme:'light',themeChosen:true,activeThemeId:'builtin-neweven',installedThemes:[]},version:1}));
+  });
   const page=await context.newPage();
   page.setDefaultTimeout(20000);
   page.on('pageerror',e=>problems.push(`${device}: ${e.message}`));
@@ -29,9 +32,19 @@ try {
     overflow:document.documentElement.scrollWidth>window.innerWidth,
     loginVisible:!!document.querySelector('#password'),
    }));
-   if (state.background!=='#06111f' || !state.dark || state.overflow || state.loginVisible) throw new Error(`${device} ${surface}: ${JSON.stringify(state)}`);
-   await page.screenshot({path:new URL(`app-${surface}-${device}.png`,output).pathname,fullPage:true});
-   results.push({device,surface,...state});
+   if (state.background!==(mode==='dark' ? '#06111f' : '#ffffff') || state.dark!==(mode==='dark') || state.overflow || state.loginVisible) throw new Error(`${device} ${surface}: ${JSON.stringify(state)}`);
+   await page.screenshot({path:new URL(`app-${surface}-${device}-${mode}.png`,output).pathname,fullPage:true});
+   results.push({device,mode,surface,...state});
+   if (mode==='light' && surface==='mail') {
+    await page.getByText('Coffee before the go/no-go?',{exact:true}).first().click();
+    await page.locator('.email-content-wrapper').first().waitFor();
+    const messageBackground=await page.locator('.email-content-wrapper').first().evaluate(e=>getComputedStyle(e).backgroundColor);
+    if (messageBackground!=='rgb(255, 255, 255)') throw new Error(`Mail background must remain white: ${messageBackground}`);
+    const canvasBackground=await page.locator('[data-neweven-reader-canvas]').first().evaluate(e=>getComputedStyle(e).backgroundColor);
+    if (canvasBackground!=='rgb(255, 255, 255)') throw new Error(`Reader canvas must remain white: ${canvasBackground}`);
+    await page.screenshot({path:new URL(`app-reader-${device}-light.png`,output).pathname,fullPage:true});
+    results.push({device,mode,surface:'reader',messageBackground});
+   }
   }
   await context.close();
  }

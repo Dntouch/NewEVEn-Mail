@@ -1,0 +1,38 @@
+--- a/components/layout/navigation-rail.tsx
++++ b/components/layout/navigation-rail.tsx
+@@ -351,6 +351,7 @@
+     return (
+       <nav
+         data-mobile-navigation=""
++        data-neweven-navigation=""
+         className={cn(
+           "flex items-center bg-background border-t border-border shrink-0 overflow-x-auto mobile-scroll-hidden pb-[calc(env(safe-area-inset-bottom)/2)]",
+           mountainView && "min-h-16 border-t-0 bg-secondary shadow-[0_-1px_3px_rgb(0_0_0/0.08)]",
+@@ -523,6 +524,7 @@
+ 
+   return (
+     <div
++      data-neweven-navigation=""
+       className={cn(
+         "flex flex-col h-full",
+         collapsed ? "items-center" : "",
+--- a/components/layout/sidebar.tsx
++++ b/components/layout/sidebar.tsx
+@@ -1456,6 +1456,7 @@
+       onMouseEnter={mvShell && sidebarCollapsed ? () => setRailHovered(true) : undefined}
+       onMouseLeave={mvShell && sidebarCollapsed ? () => setRailHovered(false) : undefined}
+       data-mv-rail-peek={hoverExpanded ? "" : undefined}
++      data-neweven-navigation=""
+       className={cn(
+         "relative flex flex-col h-full border-e transition-all duration-300 overflow-hidden",
+         // Mountain View's navigation sits on the canvas, with no rule between
+--- a/components/layout/mobile-header.tsx
++++ b/components/layout/mobile-header.tsx
+@@ -152,6 +152,7 @@
+ 
+   return (
+     <header
++      data-neweven-navigation=""
+       data-mobile-mail-header=""
+       className={cn(
+         "flex items-center justify-between h-14 shrink-0",
