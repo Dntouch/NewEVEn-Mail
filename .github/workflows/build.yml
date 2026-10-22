@@ -1,5 +1,10 @@
 name: NewEVEn Lite build
-on: [push, pull_request, workflow_dispatch]
+on:
+  push:
+    branches: ['**']
+    tags: ['neweven-v*']
+  pull_request:
+  workflow_dispatch:
 permissions:
   contents: read
 jobs:
@@ -57,3 +62,42 @@ jobs:
           path: |
             dist/
             artifacts/
+
+  release:
+    if: startsWith(github.ref, 'refs/tags/neweven-v')
+    needs: build
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/download-artifact@v4
+        with:
+          name: neweven-stalwart
+          path: release-artifact
+      - name: Prepare release files
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir release
+          cp release-artifact/dist/neweven-mail-1.17.0-stalwart.zip release/bulwark-lite-stalwart.zip
+          cp release-artifact/dist/stalwart-checksums.json release/stalwart-checksums.json
+          cd release
+          sha256sum bulwark-lite-stalwart.zip stalwart-checksums.json > SHA256SUMS
+      - name: Publish verified release
+        env:
+          GH_TOKEN: ${{ github.token }}
+          GH_REPO: ${{ github.repository }}
+          RELEASE_TAG: ${{ github.ref_name }}
+        shell: bash
+        run: |
+          set -euo pipefail
+          cat > /tmp/neweven-release-notes.md <<'NOTES'
+          NewEVEn Mail auf Basis von Bulwark Lite 1.17.0, mit eigener Anmeldung und hellem/dunklem Anwendungsthema.
+
+          Stalwart-Paket: `bulwark-lite-stalwart.zip`. Zuerst als separate Anwendung unter `/webmail-test/` installieren. Das Paket verwendet den bereitstellenden Stalwart-Server; der Demo-Modus ist ausgeschaltet.
+
+          Beide Build-Ziele, Regressionstests und Browserprüfungen müssen erfolgreich sein, bevor dieses Release veröffentlicht wird. Echte Mailserver-Integrationstests sind zusätzlich auf der eigenen Testinstallation erforderlich.
+
+          Vollständiger Projektaufbau und die festgelegte Upstream-Version sind im Repository am zugehörigen Tag verfügbar. Quellcode mit `git clone --recurse-submodules` laden. Lizenz: AGPL-3.0-only; Hinweise in LICENSE und NOTICE beachten.
+          NOTES
+          gh release create "$RELEASE_TAG" release/bulwark-lite-stalwart.zip release/stalwart-checksums.json release/SHA256SUMS --repo "$GH_REPO" --verify-tag --title "NewEVEn Mail $RELEASE_TAG" --notes-file /tmp/neweven-release-notes.md

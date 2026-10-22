@@ -97,3 +97,11 @@ Dafür muss Playwrights Chromium vorhanden sein (`npx playwright install chromiu
 in `.work/webmail`), alternativ `CHROMIUM_PATH` auf einen vorhandenen Browser setzen.
 Die GitHub-Actions-Workflowdatei führt die zugehörige Prüfung für beide Build-Ziele
 aus; sie wurde lokal vorbereitet und noch nicht auf GitHub ausgeführt.
+
+## GitHub und Stalwart-Releases
+
+Die Veröffentlichung ist für `Dntouch/NewEVEn-Mail` vorbereitet.
+[Repository und Releases einrichten](docs/GITHUB-RELEASE.md). Ein Tag mit dem
+Präfix `neweven-v` veröffentlicht nach erfolgreichen Builds und Prüfungen ein
+Stalwart-ZIP mit fester Download-Adresse. Der Mailserver wird dadurch nicht
+automatisch aktualisiert.

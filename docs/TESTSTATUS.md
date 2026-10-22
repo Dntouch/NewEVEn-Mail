@@ -2,7 +2,7 @@
 
 ## Erfolgreich geprüft
 
-- Frischer Aufbau aus festgelegtem Upstream-Commit; alle neun Patches anwendbar.
+- Frischer Aufbau aus festgelegtem Upstream-Commit; alle zehn Patches anwendbar.
 - Lockfile-Installation mit `npm ci --ignore-scripts`; die korrigierten Abhängigkeiten
   ließen sich auch mit dem vorher gefüllten npm-Cache ohne Netz installieren.
 - 211 Tests in sieben Vitest-Dateien: Lite-Konfiguration, Stalwart-Mount-Laufzeit,
@@ -42,3 +42,8 @@ entfernten Repository ausgeführt.
 Kein SSH/SFTP-Upload und keine Änderung an Stalwart, Caddy oder der produktiven
 Webmail-Application. Der dokumentierte Rollback muss zuerst mit einer separaten
 Test-Application auf dem tatsächlichen Server erprobt werden.
+
+GitHub-Veröffentlichung vorbereitet: Release-Job nach beiden Build-Jobs,
+Tag-Muster `neweven-v*`, direkter ZIP-Download und SHA-256-Prüfsummen. YAML
+lokal geparst, 211 Tests nach Ergänzung des Projekt-Quellcodelinks erneut bestanden.
+Die neue Workflow-Ausführung und tatsächliche Veröffentlichung sind noch offen.

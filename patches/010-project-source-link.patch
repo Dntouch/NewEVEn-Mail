@@ -1,0 +1,21 @@
+--- a/app/(main)/[locale]/login/page.tsx
++++ b/app/(main)/[locale]/login/page.tsx
+@@ -1667,7 +1667,7 @@
+         </div>
+       </div>
+       <NewEVEnBenefits />
+-      <footer className="neweven-footer">Powered by <a href="https://www.bulwarkmail.org/" target="_blank" rel="noopener noreferrer">Bulwark</a> · NewEVEn Mail</footer>
++      <footer className="neweven-footer">Powered by <a href="https://www.bulwarkmail.org/" target="_blank" rel="noopener noreferrer">Bulwark</a> · NewEVEn Mail · <a href="https://github.com/Dntouch/NewEVEn-Mail" target="_blank" rel="noopener noreferrer">{de ? "Quellcode" : "Source code"}</a></footer>
+     </div>
+   );
+ }
+--- a/scripts/lite/lib.mjs
++++ b/scripts/lite/lib.mjs
+@@ -168,6 +168,7 @@
+       : {}),
+     rememberMeEnabled: parseBool(env.LITE_REMEMBER_ME, true),
+     demoMode: parseBool(env.LITE_DEMO_MODE, false),
++    sourceCodeUrl: "https://github.com/Dntouch/NewEVEn-Mail",
+     faviconUrl: "/branding/neweven/mark.svg",
+     appLogoLightUrl: "/branding/neweven/mark.svg",
+     appLogoDarkUrl: "/branding/neweven/mark.svg",
